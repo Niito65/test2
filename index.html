@@ -1,379 +1,160 @@
 <!doctype html>
-<html lang="fr" class="h-full">
- <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Triade CIA - Cybersécurité</title>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Triade CIA – Cybersécurité</title>
+
   <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
+
   <style>
-        body {
-            box-sizing: border-box;
-        }
-        
-        .triangle-container {
-            position: relative;
-            width: 100%;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-        
-        .triangle {
-            width: 0;
-            height: 0;
-            border-left: 250px solid transparent;
-            border-right: 250px solid transparent;
-            border-bottom: 433px solid var(--primary-color);
-            position: relative;
-            opacity: 0.15;
-        }
-        
-        .node {
-            position: absolute;
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-        }
-        
-        .node:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
-        }
-        
-        .node.active {
-            transform: scale(1.15);
-            box-shadow: 0 8px 35px rgba(0, 0, 0, 0.3);
-        }
-        
-        .node-icon {
-            font-size: 48px;
-            margin-bottom: 8px;
-        }
-        
-        .node-title {
-            font-weight: 700;
-            text-align: center;
-            font-size: 14px;
-        }
-        
-        .info-panel {
-            background: var(--surface-color);
-            border-radius: 16px;
-            padding: 32px;
-            margin-top: 48px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            min-height: 180px;
-            transition: all 0.3s ease;
-        }
-        
-        .info-content {
-            display: none;
-        }
-        
-        .info-content.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .line {
-            position: absolute;
-            height: 3px;
-            background: var(--primary-color);
-            opacity: 0.3;
-            transform-origin: left center;
-        }
-    </style>
-  <style>@view-transition { navigation: auto; }</style>
-  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
- </head>
- <body class="h-full">
-  <div class="w-full h-full" style="background: #0f172a;">
-   <main class="w-full h-full overflow-auto">
-    <div class="max-w-5xl mx-auto px-8 py-12">
-     <header class="text-center mb-16">
-      <h1 id="main-title" class="mb-4" style="font-weight: 800; color: #ffffff;"></h1>
-      <p id="subtitle" class="opacity-80" style="color: #e2e8f0;"></p>
-     </header>
-     <div class="triangle-container mb-8">
-      <div class="triangle" id="triangle"></div>
-      <div class="line" id="line1"></div>
-      <div class="line" id="line2"></div>
-      <div class="line" id="line3"></div>
-      <div class="node" id="node-confidentiality" data-pillar="confidentiality" style="top: -70px; left: 50%; transform: translateX(-50%);">
-       <div class="node-icon">
-        🔒
-       </div>
-       <div class="node-title" id="conf-title"></div>
+    :root {
+      --primary-color: #3b82f6;
+      --surface-color: #ffffff;
+    }
+
+    body {
+      background: #0f172a;
+    }
+
+    /* Triangle */
+    .triangle-container {
+      position: relative;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .triangle {
+      width: 0;
+      height: 0;
+      border-left: 200px solid transparent;
+      border-right: 200px solid transparent;
+      border-bottom: 346px solid var(--primary-color);
+      opacity: 0.15;
+      margin: 0 auto;
+    }
+
+    /* Nodes */
+    .node {
+      position: absolute;
+      width: 110px;
+      height: 110px;
+      border-radius: 9999px;
+      background: var(--surface-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      box-shadow: 0 6px 18px rgba(0,0,0,.2);
+    }
+
+    .node:hover { transform: scale(1.08); }
+    .node.active { transform: scale(1.12); }
+
+    .node-icon { font-size: 36px; }
+    .node-title { font-size: 13px; font-weight: 600; text-align: center; }
+
+    /* Info panel */
+    .info-panel {
+      margin-top: 2rem;
+      background: var(--surface-color);
+      border-radius: 14px;
+      padding: 1.5rem;
+      min-height: 160px;
+      box-shadow: 0 8px 25px rgba(0,0,0,.15);
+    }
+
+    .info-content { display: none; }
+    .info-content.active { display: block; animation: fade .25s ease; }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body class="text-slate-200">
+  <main class="max-w-4xl mx-auto px-6 py-8">
+
+    <!-- Header -->
+    <header class="text-center mb-10">
+      <h1 id="main-title" class="text-3xl font-extrabold text-white mb-2"></h1>
+      <p id="subtitle" class="text-slate-300"></p>
+    </header>
+
+    <!-- Triangle -->
+    <section class="triangle-container mb-12"> <!-- <-- Modification ici : mb-12 -->
+      <div class="triangle"></div>
+
+      <div class="node -top-14 left-1/2 -translate-x-1/2"
+           id="node-confidentiality" data-pillar="confidentiality">
+        <div class="node-icon">🔒</div>
+        <div class="node-title" id="conf-title"></div>
       </div>
-      <div class="node" id="node-integrity" data-pillar="integrity" style="bottom: -70px; left: 0;">
-       <div class="node-icon">
-        ✓
-       </div>
-       <div class="node-title" id="int-title"></div>
+
+      <div class="node -bottom-14 left-0"
+           id="node-integrity" data-pillar="integrity">
+        <div class="node-icon">✓</div>
+        <div class="node-title" id="int-title"></div>
       </div>
-      <div class="node" id="node-availability" data-pillar="availability" style="bottom: -70px; right: 0;">
-       <div class="node-icon">
-        ⚡
-       </div>
-       <div class="node-title" id="avail-title"></div>
+
+      <div class="node -bottom-14 right-0"
+           id="node-availability" data-pillar="availability">
+        <div class="node-icon">⚡</div>
+        <div class="node-title" id="avail-title"></div>
       </div>
-     </div>
-     <div class="info-panel" id="info-panel">
+    </section>
+
+    <!-- Info -->
+    <section class="info-panel" id="info-panel">
+
       <div class="info-content active" id="info-default">
-       <h3 style="font-weight: 700; margin-bottom: 16px; color: #1e293b; font-size: 24px;">Les Trois Piliers de la Sécurité</h3>
-       <p style="line-height: 1.8; color: #475569; font-size: 16px;">La triade CIA représente les trois principes fondamentaux de la cybersécurité. Cliquez sur chaque pilier pour en savoir plus sur son rôle dans la protection des systèmes d'information.</p>
+        <h3 class="text-xl font-bold text-slate-800 mb-3">
+          Les Trois Piliers de la Sécurité
+        </h3>
+        <p class="text-slate-600 leading-relaxed">
+          Cliquez sur chaque pilier pour comprendre son rôle dans la
+          protection des systèmes d'information.
+        </p>
       </div>
+
       <div class="info-content" id="info-confidentiality">
-       <h3 id="conf-panel-title" style="font-weight: 700; margin-bottom: 16px; font-size: 24px;"></h3>
-       <p id="conf-desc" style="line-height: 1.8; font-size: 16px; margin-bottom: 12px;"></p>
-       <ul style="line-height: 1.8; font-size: 16px; padding-left: 24px;">
-        <li>🔐 Chiffrement des données sensibles</li>
-        <li>👤 Contrôle d'accès et authentification</li>
-        <li>🛡️ Protection contre les fuites de données</li>
-       </ul>
+        <h3 id="conf-panel-title" class="text-xl font-bold mb-2"></h3>
+        <p id="conf-desc" class="mb-3"></p>
+        <ul class="list-disc pl-5 space-y-1">
+          <li>Chiffrement des données</li>
+          <li>Contrôle d’accès</li>
+          <li>Protection contre les fuites</li>
+        </ul>
       </div>
+
       <div class="info-content" id="info-integrity">
-       <h3 id="int-panel-title" style="font-weight: 700; margin-bottom: 16px; font-size: 24px;"></h3>
-       <p id="int-desc" style="line-height: 1.8; font-size: 16px; margin-bottom: 12px;"></p>
-       <ul style="line-height: 1.8; font-size: 16px; padding-left: 24px;">
-        <li>✍️ Sommes de contrôle et hachage</li>
-        <li>📝 Signatures numériques</li>
-        <li>🔍 Détection des modifications non autorisées</li>
-       </ul>
+        <h3 id="int-panel-title" class="text-xl font-bold mb-2"></h3>
+        <p id="int-desc" class="mb-3"></p>
+        <ul class="list-disc pl-5 space-y-1">
+          <li>Hachage et checksum</li>
+          <li>Signatures numériques</li>
+          <li>Détection d’altérations</li>
+        </ul>
       </div>
+
       <div class="info-content" id="info-availability">
-       <h3 id="avail-panel-title" style="font-weight: 700; margin-bottom: 16px; font-size: 24px;"></h3>
-       <p id="avail-desc" style="line-height: 1.8; font-size: 16px; margin-bottom: 12px;"></p>
-       <ul style="line-height: 1.8; font-size: 16px; padding-left: 24px;">
-        <li>💾 Redondance et sauvegardes</li>
-        <li>🔄 Plans de continuité d'activité</li>
-        <li>🛡️ Protection contre les attaques DDoS</li>
-       </ul>
+        <h3 id="avail-panel-title" class="text-xl font-bold mb-2"></h3>
+        <p id="avail-desc" class="mb-3"></p>
+        <ul class="list-disc pl-5 space-y-1">
+          <li>Sauvegardes</li>
+          <li>Haute disponibilité</li>
+          <li>Protection DDoS</li>
+        </ul>
       </div>
-     </div>
-    </div>
-   </main>
-  </div>
-  <script>
-        const defaultConfig = {
-            background_color: "#0f172a",
-            surface_color: "#ffffff",
-            text_color: "#1e293b",
-            primary_action_color: "#3b82f6",
-            secondary_action_color: "#10b981",
-            font_family: "system-ui, -apple-system, sans-serif",
-            font_size: 16,
-            main_title: "Triade CIA",
-            subtitle: "Les trois piliers de la sécurité de l'information",
-            confidentiality_title: "Confidentialité",
-            confidentiality_desc: "Protection des données contre les accès non autorisés",
-            integrity_title: "Intégrité",
-            integrity_desc: "Garantie de l'exactitude et de la complétude des données",
-            availability_title: "Disponibilité",
-            availability_desc: "Accès aux ressources quand nécessaire"
-        };
 
-        let currentPillar = null;
+    </section>
+  </main>
 
-        function updateUI(config) {
-            const baseFontStack = 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
-            const customFont = config.font_family || defaultConfig.font_family;
-            const baseSize = config.font_size || defaultConfig.font_size;
-            
-            document.body.style.fontFamily = `${customFont}, ${baseFontStack}`;
-            document.documentElement.style.setProperty('--primary-color', config.primary_action_color || defaultConfig.primary_action_color);
-            document.documentElement.style.setProperty('--surface-color', config.surface_color || defaultConfig.surface_color);
-            
-            const mainWrapper = document.querySelector('body > div');
-            mainWrapper.style.background = config.background_color || defaultConfig.background_color;
-            
-            const mainTitle = document.getElementById('main-title');
-            mainTitle.textContent = config.main_title || defaultConfig.main_title;
-            mainTitle.style.fontSize = `${baseSize * 2}px`;
-            mainTitle.style.color = '#ffffff';
-            
-            const subtitle = document.getElementById('subtitle');
-            subtitle.textContent = config.subtitle || defaultConfig.subtitle;
-            subtitle.style.fontSize = `${baseSize * 1.125}px`;
-            subtitle.style.color = '#e2e8f0';
-            
-            const confTitle = document.getElementById('conf-title');
-            confTitle.textContent = config.confidentiality_title || defaultConfig.confidentiality_title;
-            confTitle.style.fontSize = `${baseSize * 0.875}px`;
-            
-            const intTitle = document.getElementById('int-title');
-            intTitle.textContent = config.integrity_title || defaultConfig.integrity_title;
-            intTitle.style.fontSize = `${baseSize * 0.875}px`;
-            
-            const availTitle = document.getElementById('avail-title');
-            availTitle.textContent = config.availability_title || defaultConfig.availability_title;
-            availTitle.style.fontSize = `${baseSize * 0.875}px`;
-            
-            const nodes = document.querySelectorAll('.node');
-            nodes.forEach(node => {
-                node.style.background = config.surface_color || defaultConfig.surface_color;
-                node.querySelector('.node-title').style.color = config.text_color || defaultConfig.text_color;
-            });
-            
-            const confPanelTitle = document.getElementById('conf-panel-title');
-            confPanelTitle.textContent = config.confidentiality_title || defaultConfig.confidentiality_title;
-            confPanelTitle.style.color = config.primary_action_color || defaultConfig.primary_action_color;
-            confPanelTitle.style.fontSize = `${baseSize * 1.5}px`;
-            
-            const confDesc = document.getElementById('conf-desc');
-            confDesc.textContent = config.confidentiality_desc || defaultConfig.confidentiality_desc;
-            confDesc.style.color = config.text_color || defaultConfig.text_color;
-            confDesc.style.fontSize = `${baseSize}px`;
-            
-            const intPanelTitle = document.getElementById('int-panel-title');
-            intPanelTitle.textContent = config.integrity_title || defaultConfig.integrity_title;
-            intPanelTitle.style.color = config.primary_action_color || defaultConfig.primary_action_color;
-            intPanelTitle.style.fontSize = `${baseSize * 1.5}px`;
-            
-            const intDesc = document.getElementById('int-desc');
-            intDesc.textContent = config.integrity_desc || defaultConfig.integrity_desc;
-            intDesc.style.color = config.text_color || defaultConfig.text_color;
-            intDesc.style.fontSize = `${baseSize}px`;
-            
-            const availPanelTitle = document.getElementById('avail-panel-title');
-            availPanelTitle.textContent = config.availability_title || defaultConfig.availability_title;
-            availPanelTitle.style.color = config.primary_action_color || defaultConfig.primary_action_color;
-            availPanelTitle.style.fontSize = `${baseSize * 1.5}px`;
-            
-            const availDesc = document.getElementById('avail-desc');
-            availDesc.textContent = config.availability_desc || defaultConfig.availability_desc;
-            availDesc.style.color = config.text_color || defaultConfig.text_color;
-            availDesc.style.fontSize = `${baseSize}px`;
-            
-            const infoPanel = document.getElementById('info-panel');
-            infoPanel.style.background = config.surface_color || defaultConfig.surface_color;
-            
-            const defaultInfo = document.querySelector('#info-default h3');
-            defaultInfo.style.color = config.text_color || defaultConfig.text_color;
-            defaultInfo.style.fontSize = `${baseSize * 1.5}px`;
-            
-            const defaultInfoP = document.querySelector('#info-default p');
-            defaultInfoP.style.color = config.text_color || defaultConfig.text_color;
-            defaultInfoP.style.fontSize = `${baseSize}px`;
-            
-            const allLists = document.querySelectorAll('.info-content ul');
-            allLists.forEach(list => {
-                list.style.color = config.text_color || defaultConfig.text_color;
-                list.style.fontSize = `${baseSize}px`;
-            });
-        }
-
-        function showPillarInfo(pillar) {
-            document.querySelectorAll('.info-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            document.querySelectorAll('.node').forEach(node => {
-                node.classList.remove('active');
-            });
-            
-            if (pillar === currentPillar) {
-                document.getElementById('info-default').classList.add('active');
-                currentPillar = null;
-            } else {
-                document.getElementById(`info-${pillar}`).classList.add('active');
-                document.getElementById(`node-${pillar}`).classList.add('active');
-                currentPillar = pillar;
-            }
-        }
-
-        document.querySelectorAll('.node').forEach(node => {
-            node.addEventListener('click', function() {
-                const pillar = this.getAttribute('data-pillar');
-                showPillarInfo(pillar);
-            });
-        });
-
-        if (window.elementSdk) {
-            window.elementSdk.init({
-                defaultConfig,
-                onConfigChange: async (config) => {
-                    updateUI(config);
-                },
-                mapToCapabilities: (config) => ({
-                    recolorables: [
-                        {
-                            get: () => config.background_color || defaultConfig.background_color,
-                            set: (value) => {
-                                config.background_color = value;
-                                window.elementSdk.setConfig({ background_color: value });
-                            }
-                        },
-                        {
-                            get: () => config.surface_color || defaultConfig.surface_color,
-                            set: (value) => {
-                                config.surface_color = value;
-                                window.elementSdk.setConfig({ surface_color: value });
-                            }
-                        },
-                        {
-                            get: () => config.text_color || defaultConfig.text_color,
-                            set: (value) => {
-                                config.text_color = value;
-                                window.elementSdk.setConfig({ text_color: value });
-                            }
-                        },
-                        {
-                            get: () => config.primary_action_color || defaultConfig.primary_action_color,
-                            set: (value) => {
-                                config.primary_action_color = value;
-                                window.elementSdk.setConfig({ primary_action_color: value });
-                            }
-                        }
-                    ],
-                    borderables: [],
-                    fontEditable: {
-                        get: () => config.font_family || defaultConfig.font_family,
-                        set: (value) => {
-                            config.font_family = value;
-                            window.elementSdk.setConfig({ font_family: value });
-                        }
-                    },
-                    fontSizeable: {
-                        get: () => config.font_size || defaultConfig.font_size,
-                        set: (value) => {
-                            config.font_size = value;
-                            window.elementSdk.setConfig({ font_size: value });
-                        }
-                    }
-                }),
-                mapToEditPanelValues: (config) => new Map([
-                    ["main_title", config.main_title || defaultConfig.main_title],
-                    ["subtitle", config.subtitle || defaultConfig.subtitle],
-                    ["confidentiality_title", config.confidentiality_title || defaultConfig.confidentiality_title],
-                    ["confidentiality_desc", config.confidentiality_desc || defaultConfig.confidentiality_desc],
-                    ["integrity_title", config.integrity_title || defaultConfig.integrity_title],
-                    ["integrity_desc", config.integrity_desc || defaultConfig.integrity_desc],
-                    ["availability_title", config.availability_title || defaultConfig.availability_title],
-                    ["availability_desc", config.availability_desc || defaultConfig.availability_desc]
-                ])
-            });
-        }
-
-        updateUI(defaultConfig);
-    </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b93b8f435a8018c',t:'MTc2NzYyMzkzOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
