@@ -13,15 +13,14 @@
         body {
             box-sizing: border-box;
             margin: 0;
-            overflow: hidden; /* Empêche le scroll si possible */
+            overflow: hidden;
         }
         
-        /* Triangle plus compact */
         .triangle-container {
             position: relative;
             width: 100%;
-            max-width: 380px; /* Réduit */
-            margin: 60px auto 20px auto; /* Marges réduites */
+            max-width: 380px; 
+            margin: 60px auto 20px auto; 
         }
         
         .triangle {
@@ -29,15 +28,15 @@
             height: 0;
             border-left: 190px solid transparent;
             border-right: 190px solid transparent;
-            border-bottom: 300px solid var(--primary-color); /* Hauteur passée de 390 à 300 */
+            border-bottom: 280px solid var(--primary-color); 
             position: relative;
             opacity: 0.15;
         }
         
         .node {
             position: absolute;
-            width: 110px; /* Plus petit pour gagner de la place */
-            height: 110px;
+            width: 120px; 
+            height: 120px;
             border-radius: 50%;
             display: flex;
             flex-direction: column;
@@ -63,15 +62,16 @@
             background: var(--surface-color);
             border-radius: 12px;
             padding: 20px;
-            margin-top: 60px; /* Rapprochement du panneau */
+            margin-top: 50px; 
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            max-width: 900px;
+            max-width: 850px;
             margin-left: auto;
             margin-right: auto;
+            min-height: 140px;
         }
         
-        .info-content h3 { font-size: 1.25rem; margin-bottom: 0.5rem; }
-        .info-content p, .info-content li { font-size: 0.95rem; }
+        .info-content h3 { font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--primary-color); font-weight: bold; }
+        .info-content p { font-size: 1rem; line-height: 1.5; color: #334155; }
         
         .info-content { display: none; }
         .info-content.active { display: block; animation: fadeIn 0.3s ease; }
@@ -85,9 +85,9 @@
 <body class="bg-[#0f172a]">
     <div class="mx-auto px-4 py-4" style="max-width: 1117px;">
         
-        <header class="text-center mb-6">
+        <header class="text-center mb-4">
             <h1 class="text-2xl font-extrabold text-white">Triade CIA</h1>
-            <p class="text-blue-200 text-sm opacity-80">Cliquez sur un pilier pour explorer</p>
+            <p class="text-blue-200 text-sm opacity-80">Cliquez sur un pilier pour découvrir sa définition</p>
         </header>
 
         
@@ -96,19 +96,19 @@
             <div class="triangle"></div>
             
             <div class="node" id="node-confidentiality" data-pillar="confidentiality" 
-                 style="top: -55px; left: 50%; transform: translateX(-50%);">
+                 style="top: -60px; left: 50%; transform: translateX(-50%);">
                 <div class="node-icon">🔒</div>
                 <div class="node-title">Confidentialité</div>
             </div>
             
             <div class="node" id="node-integrity" data-pillar="integrity" 
-                 style="bottom: -55px; left: -10px;">
+                 style="bottom: -50px; left: -10px;">
                 <div class="node-icon">🛡️</div>
                 <div class="node-title">Intégrité</div>
             </div>
             
             <div class="node" id="node-availability" data-pillar="availability" 
-                 style="bottom: -55px; right: -10px;">
+                 style="bottom: -50px; right: -10px;">
                 <div class="node-icon">⚡</div>
                 <div class="node-title">Disponibilité</div>
             </div>
@@ -116,32 +116,23 @@
 
         <div class="info-panel">
             <div class="info-content active" id="info-default">
-                <h3 class="font-bold text-slate-800">Les Trois Piliers</h3>
-                <p class="text-slate-600">Sélectionnez un élément ci-dessus pour voir les détails de protection.</p>
+                <h3 style="color: #1e293b;">Les Trois Piliers</h3>
+                <p>La triade CIA est la base de la sécurité informatique. Cliquez sur un pilier pour voir son importance.</p>
             </div>
+
             <div class="info-content" id="info-confidentiality">
-                <h3 class="font-bold text-blue-600">Confidentialité</h3>
-                <p class="text-slate-700">Accès restreint aux seules personnes autorisées.</p>
-                <ul class="text-slate-600 list-disc ml-5">
-                    <li>Chiffrement (AES, RSA)</li>
-                    <li>Authentification MFA</li>
-                </ul>
+                <h3>Confidentialité</h3>
+                <p>Seules les personnes autorisées peuvent voir les informations, afin qu’elles ne tombent pas entre de mauvaises mains.</p>
             </div>
+
             <div class="info-content" id="info-integrity">
-                <h3 class="font-bold text-blue-600">Intégrité</h3>
-                <p class="text-slate-700">Garantie de non-altération des données.</p>
-                <ul class="text-slate-600 list-disc ml-5">
-                    <li>Hachage (SHA-256)</li>
-                    <li>Signatures électroniques</li>
-                </ul>
+                <h3>Intégrité</h3>
+                <p>Les informations restent exactes et ne sont pas modifiées sans autorisation, pour qu’on puisse leur faire confiance.</p>
             </div>
+
             <div class="info-content" id="info-availability">
-                <h3 class="font-bold text-blue-600">Disponibilité</h3>
-                <p class="text-slate-700">Accès garanti aux systèmes 24/7.</p>
-                <ul class="text-slate-600 list-disc ml-5">
-                    <li>Sauvegardes et redondance</li>
-                    <li>Protection DDoS</li>
-                </ul>
+                <h3>Disponibilité</h3>
+                <p>Les informations et les services sont accessibles quand on en a besoin, sans interruption.</p>
             </div>
         </div>
     </div>
