@@ -13,31 +13,31 @@
         body {
             box-sizing: border-box;
             margin: 0;
-            overflow-x: hidden;
+            overflow: hidden; /* Empêche le scroll si possible */
         }
         
-        /* Conteneur adapté à 1117px max */
+        /* Triangle plus compact */
         .triangle-container {
             position: relative;
             width: 100%;
-            max-width: 450px; /* Réduit pour laisser de la place aux nœuds sur les côtés */
-            margin: 80px auto; /* Marge haute pour le nœud du sommet */
+            max-width: 380px; /* Réduit */
+            margin: 60px auto 20px auto; /* Marges réduites */
         }
         
         .triangle {
             width: 0;
             height: 0;
-            border-left: 225px solid transparent;
-            border-right: 225px solid transparent;
-            border-bottom: 390px solid var(--primary-color);
+            border-left: 190px solid transparent;
+            border-right: 190px solid transparent;
+            border-bottom: 300px solid var(--primary-color); /* Hauteur passée de 390 à 300 */
             position: relative;
             opacity: 0.15;
         }
         
         .node {
             position: absolute;
-            width: 130px; /* Légèrement réduit */
-            height: 130px;
+            width: 110px; /* Plus petit pour gagner de la place */
+            height: 110px;
             border-radius: 50%;
             display: flex;
             flex-direction: column;
@@ -45,69 +45,70 @@
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
             background: white;
             z-index: 10;
         }
         
-        .node:hover { transform: scale(1.1); }
+        .node:hover { transform: scale(1.05); }
         .node.active { 
-            transform: scale(1.15);
+            transform: scale(1.1);
             border: 3px solid var(--primary-color);
         }
         
-        .node-icon { font-size: 40px; margin-bottom: 4px; }
-        .node-title { font-weight: 700; text-align: center; font-size: 13px; color: #1e293b; }
+        .node-icon { font-size: 32px; }
+        .node-title { font-weight: 700; text-align: center; font-size: 11px; color: #1e293b; }
         
         .info-panel {
             background: var(--surface-color);
-            border-radius: 16px;
-            padding: 25px;
-            margin-top: 100px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            min-height: 180px;
-            max-width: 800px;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 60px; /* Rapprochement du panneau */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
             margin-left: auto;
             margin-right: auto;
         }
         
+        .info-content h3 { font-size: 1.25rem; margin-bottom: 0.5rem; }
+        .info-content p, .info-content li { font-size: 0.95rem; }
+        
         .info-content { display: none; }
-        .info-content.active { 
-            display: block; 
-            animation: fadeIn 0.3s ease; 
-        }
+        .info-content.active { display: block; animation: fadeIn 0.3s ease; }
         
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
-<body class="h-full bg-[#0f172a]">
-    <div class="mx-auto h-full overflow-y-auto px-4 py-8" style="max-width: 1117px;">
+<body class="bg-[#0f172a]">
+    <div class="mx-auto px-4 py-4" style="max-width: 1117px;">
         
-        <header class="text-center mb-12">
-            <h1 class="text-3xl md:text-4xl font-extrabold text-white mb-2">Triade CIA</h1>
-            <p class="text-blue-200 opacity-80">Les trois piliers de la sécurité de l'information</p>
+        <header class="text-center mb-6">
+            <h1 class="text-2xl font-extrabold text-white">Triade CIA</h1>
+            <p class="text-blue-200 text-sm opacity-80">Cliquez sur un pilier pour explorer</p>
         </header>
+
+        
 
         <div class="triangle-container">
             <div class="triangle"></div>
             
             <div class="node" id="node-confidentiality" data-pillar="confidentiality" 
-                 style="top: -65px; left: 50%; transform: translateX(-50%);">
+                 style="top: -55px; left: 50%; transform: translateX(-50%);">
                 <div class="node-icon">🔒</div>
                 <div class="node-title">Confidentialité</div>
             </div>
             
             <div class="node" id="node-integrity" data-pillar="integrity" 
-                 style="bottom: -65px; left: -20px;">
+                 style="bottom: -55px; left: -10px;">
                 <div class="node-icon">🛡️</div>
                 <div class="node-title">Intégrité</div>
             </div>
             
             <div class="node" id="node-availability" data-pillar="availability" 
-                 style="bottom: -65px; right: -20px;">
+                 style="bottom: -55px; right: -10px;">
                 <div class="node-icon">⚡</div>
                 <div class="node-title">Disponibilité</div>
             </div>
@@ -115,37 +116,31 @@
 
         <div class="info-panel">
             <div class="info-content active" id="info-default">
-                <h3 class="text-xl font-bold text-slate-800 mb-4">Les Trois Piliers de la Sécurité</h3>
-                <p class="text-slate-600 leading-relaxed">La triade CIA représente les principes fondamentaux. Cliquez sur chaque pilier pour découvrir les méthodes de protection associées.</p>
+                <h3 class="font-bold text-slate-800">Les Trois Piliers</h3>
+                <p class="text-slate-600">Sélectionnez un élément ci-dessus pour voir les détails de protection.</p>
             </div>
-
             <div class="info-content" id="info-confidentiality">
-                <h3 class="text-xl font-bold text-blue-600 mb-4">Confidentialité</h3>
-                <p class="text-slate-700 mb-4">Garantit que les données ne sont accessibles qu'aux personnes autorisées.</p>
-                <ul class="space-y-2 text-slate-600 ml-4 list-disc">
-                    <li>Chiffrement des données sensibles</li>
-                    <li>Contrôle d'accès et authentification forte</li>
-                    <li>Protection contre les fuites (DLP)</li>
+                <h3 class="font-bold text-blue-600">Confidentialité</h3>
+                <p class="text-slate-700">Accès restreint aux seules personnes autorisées.</p>
+                <ul class="text-slate-600 list-disc ml-5">
+                    <li>Chiffrement (AES, RSA)</li>
+                    <li>Authentification MFA</li>
                 </ul>
             </div>
-
             <div class="info-content" id="info-integrity">
-                <h3 class="text-xl font-bold text-blue-600 mb-4">Intégrité</h3>
-                <p class="text-slate-700 mb-4">Garantit que les données n'ont pas été modifiées de façon non autorisée.</p>
-                <ul class="space-y-2 text-slate-600 ml-4 list-disc">
-                    <li>Hachage et sommes de contrôle</li>
-                    <li>Signatures numériques</li>
-                    <li>Journalisation des modifications</li>
+                <h3 class="font-bold text-blue-600">Intégrité</h3>
+                <p class="text-slate-700">Garantie de non-altération des données.</p>
+                <ul class="text-slate-600 list-disc ml-5">
+                    <li>Hachage (SHA-256)</li>
+                    <li>Signatures électroniques</li>
                 </ul>
             </div>
-
             <div class="info-content" id="info-availability">
-                <h3 class="text-xl font-bold text-blue-600 mb-4">Disponibilité</h3>
-                <p class="text-slate-700 mb-4">Garantit que les systèmes et données sont accessibles en cas de besoin.</p>
-                <ul class="space-y-2 text-slate-600 ml-4 list-disc">
-                    <li>Redondance des systèmes et sauvegardes</li>
-                    <li>Plans de reprise d'activité (PRA)</li>
-                    <li>Protection anti-DDoS</li>
+                <h3 class="font-bold text-blue-600">Disponibilité</h3>
+                <p class="text-slate-700">Accès garanti aux systèmes 24/7.</p>
+                <ul class="text-slate-600 list-disc ml-5">
+                    <li>Sauvegardes et redondance</li>
+                    <li>Protection DDoS</li>
                 </ul>
             </div>
         </div>
@@ -153,11 +148,9 @@
 
     <script>
         let currentPillar = null;
-
         function showPillarInfo(pillar) {
-            document.querySelectorAll('.info-content').forEach(content => content.classList.remove('active'));
-            document.querySelectorAll('.node').forEach(node => node.classList.remove('active'));
-            
+            document.querySelectorAll('.info-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.node').forEach(n => n.classList.remove('active'));
             if (pillar === currentPillar) {
                 document.getElementById('info-default').classList.add('active');
                 currentPillar = null;
@@ -167,11 +160,8 @@
                 currentPillar = pillar;
             }
         }
-
-        document.querySelectorAll('.node').forEach(node => {
-            node.addEventListener('click', function() {
-                showPillarInfo(this.getAttribute('data-pillar'));
-            });
+        document.querySelectorAll('.node').forEach(n => {
+            n.addEventListener('click', function() { showPillarInfo(this.getAttribute('data-pillar')); });
         });
     </script>
 </body>
